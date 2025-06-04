@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <base target="_top">
+    <title>Confirmación de Asistencia</title>
+  </head>
+  <body>
+    <h2>Confirmación de Asistencia (RSVP)</h2>
+
+    <form id="rsvpForm">
+      <!-- 1. Desplegable de nombres -->
+      <label for="nombre">Nombre:</label><br>
+      <select id="nombre" name="nombre" required>
+        <!-- Las opciones se completarán desde el servidor -->
+      </select>
+      <br><br>
+
+      <!-- 2. Opción Sí/No -->
+      <label>¿Asistirás?:</label><br>
+      <input type="radio" name="confirma" value="Sí" checked> Sí
+      <input type="radio" name="confirma" value="No"> No
+      <br><br>
+
+      <!-- 3. Cantidad de invitados -->
+      <label for="cantidadInvitados">Cantidad de invitados:</label><br>
+      <input type="number" id="cantidadInvitados" name="cantidadInvitados" min="0" value="0">
+      <br><br>
+
+      <!-- 4. Comentarios libres -->
+      <label for="comentarios">Comentarios:</label><br>
+      <textarea id="comentarios" name="comentarios"
+                rows="4" cols="50"
+                placeholder="Escribe aquí algún comentario..."></textarea>
+      <br><br>
+
+      <button type="button" onclick="submitForm()">Enviar</button>
+    </form>
+
+    <!-- Aquí mostraremos el mensaje de “gracias” o de error -->
+    <div id="resultado" style="margin-top:20px; color: green;"></div>
+
+    <script>
+      // Cuando la página cargue, solicitamos al servidor la lista de nombres
+      document.addEventListener('DOMContentLoaded', function() {
+        google.script.run
+          .withSuccessHandler(function(nombres) {
+            var select = document.getElementById('nombre');
+            nombres.forEach(function(nombre) {
+              var opcion = document.createElement('option');
+              opcion.value = nombre;
+              opcion.text = nombre;
+              select.appendChild(opcion);
+            });
+          })
+          .getAsignaciones();
+      });
+
+      // Esta función se llama al hacer clic en “Enviar”
+      function submitForm() {
+        // Armamos el objeto con los valores del formulario
+        var form = {
+          nombre: document.getElementById('nombre').value,
+          confirma: document.querySelector('input[name="confirma"]:checked').value,
+          cantidadInvitados: document.getElementById('cantidadInvitados').value,
+          comentarios: document.getElementById('comentarios').value
+        };
+
+        // Llamamos al servidor para guardar la respuesta
+        google.script.run
+          .withSuccessHandler(function(res) {
+            // Mostrar mensaje de éxito
+            document.getElementById('resultado').style.color = 'green';
+            document.getElementById('resultado').innerText = res;
+            // Limpiar el formulario
+            document.getElementById('rsvpForm').reset();
+          })
+          .withFailureHandler(function(error) {
+            // Mostrar mensaje de error
+            document.getElementById('resultado').style.color = 'red';
+            document.getElementById('resultado').innerText = 'Error: ' + error.message;
+          })
+          .guardarRespuesta(form);
+      }
+    </script>
+  </body>
+</html>
