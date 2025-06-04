@@ -95,10 +95,11 @@
     //  Variables que debes reemplazar:
     // ------------------------------
     // 1) URL que publica tu Sheet de Asignaciones en CSV (o JSON).
-    const URL_ASIGNACIONES_CSV = "https://docs.google.com/spreadsheets/d/XXXXX/pub?gid=0&single=true&output=csv";
+    const URL_ASIGNACIONES_CSV = "https://docs.google.com/spreadsheets/d/TU_ID_DE_SHEET/pub?gid=0&single=true&output=csv";
 
     // 2) URL de tu Apps Script (endpoint) que guardará las respuestas.
-    const URL_APPS_SCRIPT = "https://script.google.com/macros/s/AKfycxxxxx/exec";
+    // Sustituye A KfycbwHAuXhusqE3U-bbcxBTgMR7mH20V9zyvRgzDng98zUSkpaCtnLC-daC8Qy18Gj2tMQIA por tu ID real.
+    const URL_APPS_SCRIPT = "https://script.google.com/macros/s/AKfycbwHAuXhusqE3U-bbcxBTgMR7mH20V9zyvRgzDng98zUSkpaCtnLC-daC8Qy18Gj2tMQIA/exec";
 
     // ------------------------------
     //  Código JavaScript
@@ -221,23 +222,4 @@
       .then(() => {
         // Mostramos mensaje de éxito
         document.getElementById("mensajeRsvp").style.display = "block";
-        // Ocultamos posibles errores previos
-        document.getElementById("errorRsvp").style.display = "none";
-        // Limpiamos el formulario (para que no reenvíe por error)
-        document.getElementById("formRsvp").reset();
-        // Limpiamos el texto de infoMax
-        document.getElementById("infoMax").innerText = "";
-      })
-      .catch(err => {
-        // Si hay error al enviar
-        document.getElementById("errorRsvp").innerText =
-          "Hubo un problema al registrar tu respuesta. Intenta de nuevo más tarde.";
-        document.getElementById("errorRsvp").style.display = "block";
-        console.error("Error al enviar RSVP:", err);
-      });
-
-      return false; // Evita recargar la página
-    }
-  </script>
-</body>
-</html>
+        // Oc
